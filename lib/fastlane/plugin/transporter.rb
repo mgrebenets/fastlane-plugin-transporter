@@ -102,6 +102,7 @@ module Fastlane
     def self.check_install_path(install_path:)
       FastlaneCore::UI.user_error!("No Transporter installation found at path: #{install_path.red}") unless File.exist?(install_path)
     end
+    private_class_method :check_install_path
   end
 end
 

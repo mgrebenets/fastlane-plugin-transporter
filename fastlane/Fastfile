@@ -1,4 +1,4 @@
 lane :test do
   install_transporter
-  configure_transporter(root_ca: "CBAInternalRootCA")
+  configure_transporter(root_ca: "RootCAName")
 end
