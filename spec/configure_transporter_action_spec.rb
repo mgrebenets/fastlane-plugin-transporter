@@ -1,10 +1,19 @@
 describe Fastlane::Actions::ConfigureTransporterAction do
   describe '#run' do
-    # TODO:
-    it 'prints a message' do
-      expect(Fastlane::UI).to receive(:message).with("The transporter plugin is working!")
+    it 'raises an error if transporter is not installed' do
+      # TODO:
+    end
 
-      Fastlane::Actions::ConfigureTransporterAction.run(nil)
+    it 'adds root ca certificate to keystore' do
+      # TODO:
+    end
+
+    it 'returns early if ca certificate already exists in keystore' do
+      # TODO:
+    end
+
+    it 'enables basic authentication' do
+      # TODO:
     end
   end
 end
