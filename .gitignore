@@ -2,11 +2,13 @@
 Gemfile.lock
 
 ## Documentation cache and generated files:
-/.yardoc/
+.bundle/
+.vscode/
 /_yardoc/
+/.yardoc/
 /doc/
 /rdoc/
+coverage
 fastlane/README.md
 fastlane/report.xml
-coverage
 test-results

@@ -7,46 +7,53 @@ module Fastlane
       Dir[File.expand_path('**/{actions,helper}/*.rb', File.dirname(__FILE__))]
     end
 
+    # Default source URL.
+    DEFAULT_TRANSPORTER_SOURCE = "https://github.com/mgrebenets/fastlane-plugin-transporter/releases/download/0.0.1/iTMSTransporter_1.13.0.tgz"
+
     # Default installation path.
-    DEFAULT_TRANSPORTER_PATH = File.expand_path("~/itms")
+    DEFAULT_TRANSPORTER_INSTALL_PATH = File.expand_path("~/itms")
 
     # Install transporter.
     # @param source [String] Transporter tarball URL or path; or path to existing Transporter directory.
     # @param install_path [String] Transporter install path.
-    # @param force [Boolean] Overwrite existing installation. Default is `false`.
+    # @param overwrite [Boolean] Overwrite existing installation. Default is `false`.
     def self.install(
-      source: "TODO/iTMSTransporter_1.13.0.tgz",
-      install_path: DEFAULT_TRANSPORTER_PATH,
-      force: false
+      source: DEFAULT_TRANSPORTER_SOURCE,
+      install_path: DEFAULT_TRANSPORTER_INSTALL_PATH,
+      overwrite: false
     )
-      if File.exist?(install_path) && !force
-        FastlaneCore::UI.message("Transporter is already installed at path: #{install_path.green}")
-        FastlaneCore::UI.message("Use #{'force'.green}:#{'true'.yellow} option to overwrite")
+      if install_path == source
+        FastlaneCore::UI.message("Source and install path are the same")
         return
       end
 
-      return if install_path == source # Source is same as destination.
-      # TODO: Just copy over if source is a directory.
+      if File.exist?(install_path) && !overwrite
+        FastlaneCore::UI.message("Transporter is already installed at path: #{install_path.green}")
+        FastlaneCore::UI.message("Use #{'overwrite'.green}:#{'true'.yellow} option to overwrite")
+        return
+      end
 
       FileUtils.rm_rf(install_path)
       FileUtils.mkdir_p(install_path)
 
-      tar_path = FileUtils.fetch_file(source)
-      Fastlane::Actions.sh("tar -xzf #{tar_path} -C #{install_path.shellescape} --strip-components=1")
+      if File.directory?(source)
+        FileUtils.cp_r(source, install_path)
+      else
+        tar_path = Helper::TransporterHelper.fetch_file(source)
+        Fastlane::Actions.sh("tar -xzf #{tar_path} -C #{install_path.shellescape} --strip-components=1")
+      end
     end
 
-    # Patch Transporter installation.
+    # Add root CA to Transporter installation.
     # @param install_path [String] Transporter install path.
-    # @param root_ca [String] Name of Internal Root CA certificate to add to Transporter's Java certificate keystore.
-    def self.patch(
-      install_path: DEFAULT_TRANSPORTER_PATH,
-      root_ca:,
-      allow_basic_auth: false
+    # @param root_ca [String] Name or file path of Internal Root CA certificate to add to Transporter's Java certificate keystore.
+    def self.add_root_ca(
+      install_path: DEFAULT_TRANSPORTER_INSTALL_PATH,
+      root_ca:
     )
-      FastlaneCore::UI.user_error!("No Transporter installation found at path: #{install_path.red}") unless File.exist?(install_path)
+      check_install_path(install_path: install_path)
 
-      root_ca_file = Tempfile.new("root_ca.pem").path
-      Fastlane::Actions.sh("security find-certificate -c #{root_ca} -p >#{root_ca_file}")
+      root_ca_file = Helper::TransporterHelper.find_root_ca(root_ca)
 
       cmd = [
         "#{install_path}/java/bin/keytool",
@@ -57,7 +64,7 @@ module Fastlane
       ].join(" ")
       cert_exists = system(cmd)
       if cert_exists
-        FastlaneCore::UI.message("Transporter is already patched.")
+        FastlaneCore::UI.message("Transporter is already configured for this root CA.")
         return
       end
 
@@ -74,14 +81,26 @@ module Fastlane
         "-v"
       ].join(" ")
       Fastlane::Actions.sh(cmd)
+    end
 
-      # Allow basic auth.
-      Fastlane::Actions.sh("sed -i '' 's/=Basic/=/g' #{install_path}/java/lib/net.properties") if allow_basic_auth
+    # Enable basic authentication for Transporter installation.
+    # @param install_path [String] Transporter install path.
+    def self.enable_basic_auth(install_path: DEFAULT_TRANSPORTER_INSTALL_PATH)
+      check_install_path(install_path: install_path)
+      Fastlane::Actions.sh("sed -i '' 's/=Basic/=/g' #{install_path}/java/lib/net.properties")
     end
 
     # Update Fastlane's Transporter path environment variable.
-    def self.update_fastlane_path(path: DEFAULT_TRANSPORTER_PATH)
+    # @param path [String] Transporter path.
+    def self.update_path(path: DEFAULT_TRANSPORTER_INSTALL_PATH)
+      check_install_path(install_path: path)
       ENV["FASTLANE_ITUNES_TRANSPORTER_PATH"] = path
+    end
+
+    # Check if Transporter is installed at given path.
+    # @param install_path [String] Transporter install path.
+    def self.check_install_path(install_path:)
+      FastlaneCore::UI.user_error!("No Transporter installation found at path: #{install_path.red}") unless File.exist?(install_path)
     end
   end
 end
