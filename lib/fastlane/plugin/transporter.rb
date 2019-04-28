@@ -22,14 +22,14 @@ module Fastlane
       install_path: DEFAULT_TRANSPORTER_INSTALL_PATH,
       overwrite: false
     )
-      if install_path == source
+      if install_path.eql?(source)
         FastlaneCore::UI.message("Source and install path are the same")
         return
       end
 
       if File.exist?(install_path) && !overwrite
         FastlaneCore::UI.message("Transporter is already installed at path: #{install_path.green}")
-        FastlaneCore::UI.message("Use #{'overwrite'.green}:#{'true'.yellow} option to overwrite")
+        FastlaneCore::UI.message("Use 'overwrite:true' option to overwrite")
         return
       end
 
