@@ -34,7 +34,8 @@ module Fastlane
         UI.message("Downloading #{path}...")
         target_path = Tempfile.new(File.basename(path)).path
         cmd = "curl --progress-bar -L #{path.shellescape} -o #{target_path.shellescape}"
-        `#{cmd}` # Won't get progress showing if using Action.sh here.
+        result = system(cmd) # Won't get progress showing if using Action.sh here.
+        FastlaneCore::UI.user_error!("Failed to fetch file: #{path}") unless result
 
         File.expand_path(target_path)
       end

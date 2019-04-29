@@ -35,7 +35,6 @@ module Fastlane
                                   env_name: "CONFIGURE_TRANSPORTER_INSTALL_PATH",
                                description: "Transporter install path",
                              default_value: Transporter::DEFAULT_TRANSPORTER_INSTALL_PATH,
-                                  optional: true,
                                       type: String),
           FastlaneCore::ConfigItem.new(key: :root_ca,
                                   env_name: "CONFIGURE_TRANSPORTER_ROOT_CA",

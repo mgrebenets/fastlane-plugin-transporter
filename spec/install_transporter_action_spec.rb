@@ -2,7 +2,7 @@ describe Fastlane::Actions::InstallTransporterAction do
   describe '#run' do
     context 'failed installation' do
       it 'raises an error for invalid source URI' do
-        failed_install_test(name: "invalid-uri", source: "http://nosuchfile")
+        failed_install_test(name: "invalid-uri", source: "http://nosuchfile", message: /Failed to fetch file:/)
       end
 
       it 'raises an error for source path that does not exist' do

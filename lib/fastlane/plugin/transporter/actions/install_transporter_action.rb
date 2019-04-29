@@ -34,19 +34,16 @@ module Fastlane
                                   env_name: "INSTALL_TRANSPORTER_SOURCE",
                                description: "A path or URI to Transporter tarball or directory",
                              default_value: Transporter::DEFAULT_TRANSPORTER_SOURCE,
-                                  optional: true,
                                       type: String),
           FastlaneCore::ConfigItem.new(key: :install_path,
                                   env_name: "INSTALL_TRANSPORTER_INSTALL_PATH",
                                description: "Transporter install path",
                              default_value: Transporter::DEFAULT_TRANSPORTER_INSTALL_PATH,
-                                  optional: true,
                                       type: String),
           FastlaneCore::ConfigItem.new(key: :overwrite,
                                   env_name: "INSTALL_TRANSPORTER_OVERWRITE",
                                description: "Overwrite existing installation",
                              default_value: false,
-                                  optional: true,
                                       type: Boolean)
         ]
       end
