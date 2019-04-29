@@ -49,7 +49,7 @@ module Fastlane
         if FastlaneCore::Helper.is_mac?
           Fastlane::Actions.sh("security find-certificate -c #{name} -p >#{root_ca_file}")
         else
-          FastlaneCore::UI.user_error!("Certificate lookup is not supported on OS other that Mac yet")
+          FastlaneCore::UI.user_error!("Certificate lookup is not supported on OS other than Mac yet")
         end
 
         root_ca_file
