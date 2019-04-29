@@ -14,6 +14,12 @@ require 'fastlane/plugin/transporter' # import the actual plugin
 
 Fastlane.load_actions # load other actions (in case your plugin calls other actions or shared values)
 
+RSPEC_ROOT = File.dirname(__FILE__)
+
+def fixture_path(path)
+  File.join(RSPEC_ROOT, path)
+end
+
 TRANSPORTER_TESTS_DIR = File.join(Dir.tmpdir, "transporter-tests")
 FileUtils.mkdir_p(TRANSPORTER_TESTS_DIR)
 

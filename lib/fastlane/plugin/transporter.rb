@@ -55,13 +55,14 @@ module Fastlane
       check_install_path(install_path: install_path)
 
       root_ca_file = Helper::TransporterHelper.find_root_ca(root_ca)
+      cert_alias = File.basename(root_ca_file)
 
       cmd = [
         "#{install_path}/java/bin/keytool",
         "-list",
         "-keystore #{install_path}/java/lib/security/cacerts",
         "-storepass changeit",
-        "-alias #{root_ca}"
+        "-alias #{cert_alias}"
       ].join(" ")
       cert_exists = system(cmd)
       if cert_exists
@@ -74,14 +75,16 @@ module Fastlane
         "#{install_path}/java/bin/keytool",
         "-import",
         "-trustcacerts",
-        "-alias #{root_ca}",
+        "-alias #{cert_alias}",
         "-file #{root_ca_file}",
         "-keystore #{install_path}/java/lib/security/cacerts",
         "-storepass changeit",
         "-noprompt",
         "-v"
       ].join(" ")
-      Fastlane::Actions.sh(cmd)
+      system(cmd)
+
+      FastlaneCore::UI.success("Added root CA certificate to keystore")
     end
 
     # Enable basic authentication for Transporter installation.
@@ -91,6 +94,7 @@ module Fastlane
       properties_file = "#{install_path}/java/lib/net.properties"
       content = File.read(properties_file).gsub("=Basic", "")
       File.open(properties_file, "w") { |f| f.puts(content) }
+      FastlaneCore::UI.success("Basic authentication is enabled")
     end
 
     # Update Fastlane's Transporter path environment variable.

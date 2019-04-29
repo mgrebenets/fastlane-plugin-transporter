@@ -1,6 +1,7 @@
 describe Fastlane::Actions::ConfigureTransporterAction do
   describe '#run' do
     let(:unpacked_transporter_path) { unpack_transporter }
+    let(:root_ca) { fixture_path("fixtures/root_ca.pem") }
 
     it 'raises an error if transporter is not installed' do
       expect do
@@ -9,14 +10,30 @@ describe Fastlane::Actions::ConfigureTransporterAction do
     end
 
     it 'adds root ca certificate to keystore by path' do
-      # TODO:
+      expect(FastlaneCore::UI).to receive(:success)
+      expect(FastlaneCore::UI).to receive(:success).with(/Added root CA certificate to keystore/)
+
+      install_path = make_install_path("add-root-ca")
+      Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
+      configure_transporter_lane(install_path: install_path, root_ca: root_ca)
     end
 
     it 'returns early if ca certificate already exists in keystore' do
-      # TODO:
+      expect(FastlaneCore::UI).to receive(:success)
+      expect(FastlaneCore::UI).to receive(:success).with(/Added root CA certificate to keystore/)
+      expect(FastlaneCore::UI).to receive(:success)
+      expect(FastlaneCore::UI).to receive(:message).with(/Transporter is already configured for this root CA/)
+
+      install_path = make_install_path("add-same-root-ca")
+      Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
+      configure_transporter_lane(install_path: install_path, root_ca: root_ca)
+      configure_transporter_lane(install_path: install_path, root_ca: root_ca)
     end
 
     it 'enables basic authentication' do
+      expect(FastlaneCore::UI).to receive(:success)
+      expect(FastlaneCore::UI).to receive(:success).with(/Basic authentication is enabled/)
+
       install_path = make_install_path("enable-basic-auth")
       Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
       configure_transporter_lane(install_path: install_path, enable_basic_auth: true)
