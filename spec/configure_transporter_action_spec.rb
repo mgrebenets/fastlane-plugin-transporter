@@ -3,8 +3,9 @@ describe Fastlane::Actions::ConfigureTransporterAction do
     let(:unpacked_transporter_path) { unpack_transporter }
 
     it 'raises an error if transporter is not installed' do
-      expect(FastlaneCore::UI).to receive(:user_error!).with(/No Transporter installation found at path/)
-      configure_transporter_lane(install_path: "nosuchpath", enable_basic_auth: true)
+      expect do
+        configure_transporter_lane(install_path: "nosuchpath", enable_basic_auth: true)
+      end.to raise_error(/No Transporter installation found at path/)
     end
 
     it 'adds root ca certificate to keystore by path' do

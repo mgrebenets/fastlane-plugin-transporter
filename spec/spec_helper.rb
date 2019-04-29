@@ -65,7 +65,7 @@ def configure_transporter_lane(install_path: nil, root_ca: nil, enable_basic_aut
   args = [
     install_path ? "install_path: '#{install_path}'" : nil,
     root_ca ? "root_ca: '#{root_ca}'" : nil,
-    enable_basic_auth ? "root_ca: #{enable_basic_auth}" : nil
+    enable_basic_auth ? "enable_basic_auth: #{enable_basic_auth}" : nil
   ].compact.join(",")
 
   Fastlane::FastFile.new.parse("lane :test do
@@ -74,9 +74,10 @@ def configure_transporter_lane(install_path: nil, root_ca: nil, enable_basic_aut
 end
 
 def failed_install_test(name:, source:, message: /Failed to unpack tarball/)
-  expect(FastlaneCore::UI).to receive(:user_error!).with(message)
   install_path = make_install_path(name)
-  install_transporter_lane(source: source, install_path: install_path)
+  expect do
+    install_transporter_lane(source: source, install_path: install_path)
+  end.to raise_error(message)
 end
 
 def successful_install_test(name:, source:)

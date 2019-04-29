@@ -88,6 +88,7 @@ module Fastlane
     # @param install_path [String] Transporter install path.
     def self.enable_basic_auth(install_path: DEFAULT_TRANSPORTER_INSTALL_PATH)
       check_install_path(install_path: install_path)
+      puts("WHy am I here?")
       Fastlane::Actions.sh("sed -i '' 's/=Basic/=/g' #{install_path}/java/lib/net.properties")
     end
 

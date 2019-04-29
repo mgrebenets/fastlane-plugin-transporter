@@ -4,8 +4,9 @@ describe Fastlane::Actions::UpdateTransporterPathAction do
     let(:default_path) { Fastlane::Transporter::DEFAULT_TRANSPORTER_INSTALL_PATH }
 
     it 'raises an error if transporter is not installed' do
-      expect(FastlaneCore::UI).to receive(:user_error!).with(/No Transporter installation found at path/)
-      update_transporter_path_lane(path: install_path)
+      expect do
+        update_transporter_path_lane(path: install_path)
+      end.to raise_error(/No Transporter installation found at path/)
     end
 
     it 'sets the environment variable to custom value' do
