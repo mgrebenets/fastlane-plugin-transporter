@@ -37,7 +37,7 @@ module Fastlane
       FileUtils.mkdir_p(install_path)
 
       if File.directory?(source)
-        FileUtils.cp_r(source, install_path)
+        FileUtils.cp_r(File.join(source, '.'), install_path)
       else
         tar_path = Helper::TransporterHelper.fetch_file(source)
         result = system("tar -xzf #{tar_path} -C #{install_path.shellescape} --strip-components=1")
@@ -88,8 +88,9 @@ module Fastlane
     # @param install_path [String] Transporter install path.
     def self.enable_basic_auth(install_path: DEFAULT_TRANSPORTER_INSTALL_PATH)
       check_install_path(install_path: install_path)
-      puts("WHy am I here?")
-      Fastlane::Actions.sh("sed -i '' 's/=Basic/=/g' #{install_path}/java/lib/net.properties")
+      properties_file = "#{install_path}/java/lib/net.properties"
+      content = File.read(properties_file).gsub("=Basic", "")
+      File.open(properties_file, "w") { |f| f.puts(content) }
     end
 
     # Update Fastlane's Transporter path environment variable.

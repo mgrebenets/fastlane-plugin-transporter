@@ -31,10 +31,11 @@ def unpack_transporter
 
   FileUtils.mkdir_p(destination)
   Fastlane::Actions.sh(`tar -xzf #{tarball} -C #{destination} --strip-components=1`, log: false)
+  destination
 end
 
 def make_install_path(name)
-  install_path = File.join(Dir.tmpdir, name)
+  install_path = File.join(TRANSPORTER_DOWNLOAD_DIR, name)
   FileUtils.rm_rf(install_path)
   install_path
 end

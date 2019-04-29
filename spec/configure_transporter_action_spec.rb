@@ -17,7 +17,11 @@ describe Fastlane::Actions::ConfigureTransporterAction do
     end
 
     it 'enables basic authentication' do
-      # TODO:
+      install_path = make_install_path("enable-basic-auth")
+      Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
+      configure_transporter_lane(install_path: install_path, enable_basic_auth: true)
+      properties_file = File.join(install_path, "java/lib/net.properties")
+      expect(File.read(properties_file)).not_to(include("=Basic"))
     end
 
     if FastlaneCore::Helper.mac?
