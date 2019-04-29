@@ -14,10 +14,12 @@ require 'fastlane/plugin/transporter' # import the actual plugin
 
 Fastlane.load_actions # load other actions (in case your plugin calls other actions or shared values)
 
-TRANSPORTER_DOWNLOAD_DIR = Dir.tmpdir
+TRANSPORTER_TESTS_DIR = File.join(Dir.tmpdir, "transporter-tests")
+FileUtils.mkdir_p(TRANSPORTER_TESTS_DIR)
+
 def download_transporter
   source = Fastlane::Transporter::DEFAULT_TRANSPORTER_SOURCE
-  output_path = File.join(TRANSPORTER_DOWNLOAD_DIR, File.basename(source))
+  output_path = File.join(TRANSPORTER_TESTS_DIR, File.basename(source))
   return output_path if File.exist?(output_path)
 
   `curl --progress -L #{source} -o #{output_path}`
@@ -35,7 +37,7 @@ def unpack_transporter
 end
 
 def make_install_path(name)
-  install_path = File.join(TRANSPORTER_DOWNLOAD_DIR, name)
+  install_path = File.join(TRANSPORTER_TESTS_DIR, name)
   FileUtils.rm_rf(install_path)
   install_path
 end
