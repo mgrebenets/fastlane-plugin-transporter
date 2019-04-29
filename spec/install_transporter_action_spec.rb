@@ -2,37 +2,41 @@ describe Fastlane::Actions::InstallTransporterAction do
   describe '#run' do
     context 'failed installation' do
       it 'raises an error for invalid source URI' do
-        # TODO:
+        failed_install_test(name: "invalid-uri", source: "http://nosuchfile")
       end
 
-      it 'raises an error for missing source path' do
-        # TODO:
+      it 'raises an error for source path that does not exist' do
+        failed_install_test(name: "path-does-not-exist", source: "nosuchfile")
       end
 
       it 'raises an error for corrupted tarball' do
-        # TODO:
+        tarball = Tempfile.new("corrupted.tgz").path
+        File.open(tarball, "w") { |f| f.puts("garbage") }
+
+        failed_install_test(name: "corrupted-tarball", source: tarball)
       end
     end
+
     context 'successful installation' do
       let(:tarball_path) { download_transporter }
       let(:unpacked_transporter_path) { unpack_transporter }
 
       it 'installs transporter from tarball source URI' do
-        install_test(
+        successful_install_test(
           name: "from-tarball-uri",
           source: "file://" + File.expand_path(tarball_path)
         )
       end
 
       it 'installs transporter from tarball file path' do
-        install_test(
+        successful_install_test(
           name: "from-tarball-path",
           source: tarball_path
         )
       end
 
       it 'installs transporter from directory path' do
-        install_test(
+        successful_install_test(
           name: "from-directory-path",
           source: unpacked_transporter_path
         )

@@ -20,7 +20,7 @@ module Fastlane
       # Check if string is a correct URI.
       def self.uri?(string)
         uri = URI.parse(string)
-        %w[http https].include?(uri.scheme)
+        %w[http https file].include?(uri.scheme)
       rescue URI::BadURIError
         false
       rescue URI::InvalidURIError

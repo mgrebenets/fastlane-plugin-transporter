@@ -50,7 +50,13 @@ def make_install_path(name)
   install_path
 end
 
-def install_test(name:, source:)
+def failed_install_test(name:, source:)
+  expect(FastlaneCore::UI).to receive(:user_error!).with(/Failed to unpack tarball/)
+  install_path = make_install_path(name)
+  install_transporter_lane(source: source, install_path: install_path)
+end
+
+def successful_install_test(name:, source:)
   install_path = make_install_path(name)
   expect(File.exist?(install_path)).to be_falsy
   install_transporter_lane(source: source, install_path: install_path)
