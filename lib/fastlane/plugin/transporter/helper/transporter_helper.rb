@@ -54,6 +54,11 @@ module Fastlane
 
         root_ca_file
       end
+
+      def self.extract_tarball(tarball, destination)
+        warning_args = "--warning=no-unknown-keyword" unless FastlaneCore::Helper.is_mac?
+        system("tar #{warning_args} -xzf #{tarball} -C #{destination} --strip-components=1")
+      end
     end
   end
 end

@@ -38,7 +38,7 @@ def unpack_transporter
   return destination if File.exist?(destination)
 
   FileUtils.mkdir_p(destination)
-  Fastlane::Actions.sh(`tar -xzf #{tarball} -C #{destination} --strip-components=1`, log: false)
+  Fastlane::Helper::TransporterHelper.extract_tarball(tarball, destination)
   destination
 end
 
