@@ -1,6 +1,8 @@
 # transporter plugin
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-transporter)
+[![version](https://badge.fury.io/gh/mgrebenets%2Ffastlane-plugin-transporter.svg)](https://badge.fury.io/gh/mgrebenets%2Ffastlane-plugin-transporter)
+[![CircleCI](https://circleci.com/gh/mgrebenets/fastlane-plugin-transporter.svg?style=svg)](https://circleci.com/gh/mgrebenets/fastlane-plugin-transporter)
 
 ## Getting Started
 
@@ -12,15 +14,36 @@ fastlane add_plugin transporter
 
 ## About transporter
 
-Manage Apple iTMSTransporter installation
+Adds actions to manage Apple iTMSTransporter installation.
 
-**Note to author:** Add a more detailed description about this plugin here. If your plugin contains multiple actions, make sure to mention them here.
+Apart from installing Transporter, this plugin allows you to configure Transporter installation.
+This is very useful in enterprise environment, where you need to work with self-signed root CA and/or company proxy.
+
+⚠️ Only Mac OS X is supported at the moment.
+
+### install_transporter
+
+The `install_transporter` action downloads and unpacks Transporter package and installs it to specified path.
+
+Instead of downloading Transporter package from remote source a path to local copy of tarball can be specified or even a path to already unpacked Transporter directory.
+
+### configure_transporter
+
+The `configure_transporter` action allows configuring Transporter after installation.
+
+If you need to use Transporter in enterprise setup with self-signed root CA used to encrypt all your network traffic, you need to add this root CA certificate to Transporter's keystore using `root_ca` parameter. This parameter can be either a path to the certificate or certificate Common Name.
+
+To enable Basic authentication for Transporter network calls, set `enable_basic_auth` to `true`.
+
+### update_transporter_path
+
+This action updates `FASTLANE_ITUNES_TRANSPORTER_PATH` with the specified install path. This environment variable is used by Fastlane to run actions like `deliver` or `pilot`.
 
 ## Example
 
 Check out the [example `Fastfile`](fastlane/Fastfile) to see how to use this plugin. Try it by cloning the repo, running `fastlane install_plugins` and `bundle exec fastlane test`.
 
-**Note to author:** Please set up a sample project to make it easy for users to explore what your plugin does. Provide everything that is necessary to try out the plugin in this project (including a sample Xcode/Android project if necessary)
+The example lane installs Transporter to `~/itms`, then adds Apple iPhone Certification Authority certificate to Transporter keystore and finally sets the `FASTLANE_ITUNES_TRANSPORTER_PATH` environment variable so that Fastlane can use this custom installation.
 
 ## Run tests for this plugin
 
@@ -38,6 +61,22 @@ rubocop -a
 ## Issues and Feedback
 
 For any other issues and feedback about this plugin, please submit it to this repository.
+
+### Linux and Windows Support
+
+Transporter package for Linux and Windows is different from the OS X version. The java binaries like `java/bin/java` and `java/bin/keytool` are actual executables compiled for target platform.
+
+To support Linux and Windows a different package would have to be downloaded and installed.
+The installation script is different from just unpack-and-copy version of Mac OS X.
+For example, [this is the Linux installation script](https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/ra/resources/download/Transporter__linux/bin/).
+
+### Remove or Overwrite Root CA Certificates
+
+Q: Why is there no way to remove or overwrite existing root CA entry in Transporter's keystore?
+
+This is a valid option but root CA certs don't expire that often.
+There's always a workaround of just reinstalling Transporter.
+If such option becomes very important, it can be added in the future.
 
 ## Troubleshooting
 

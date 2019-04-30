@@ -1,4 +1,7 @@
 lane :test do
   install_transporter
-  configure_transporter(root_ca: "RootCAName")
+  configure_transporter(root_ca: "spec/fixtures/root_ca.pem")
+  update_transporter_path
+
+  UI.success("Transporter is now installed at: #{ENV['FASTLANE_ITUNES_TRANSPORTER_PATH']}")
 end
