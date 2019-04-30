@@ -33,7 +33,7 @@ jobs:
       # run tests!
       - run:
           name: run tests
-          command: DEBUG=1 bundle exec rake
+          command: bundle exec rake
 
       # collect reports
       - store_test_results:
