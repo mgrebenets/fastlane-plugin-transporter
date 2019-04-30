@@ -9,25 +9,31 @@ describe Fastlane::Actions::ConfigureTransporterAction do
       end.to raise_error(/No Transporter installation found at path/)
     end
 
-    it 'adds root ca certificate to keystore by path' do
-      expect(FastlaneCore::UI).to receive(:success)
-      expect(FastlaneCore::UI).to receive(:success).with(/Added root CA certificate to keystore/)
+    context 'root ca' do
+      if FastlaneCore::Helper.mac?
+        it 'adds root ca certificate to keystore by path' do
+          expect(FastlaneCore::UI).to receive(:success)
+          expect(FastlaneCore::UI).to receive(:success).with(/Added root CA certificate to keystore/)
 
-      install_path = make_install_path("add-root-ca")
-      Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
-      configure_transporter_lane(install_path: install_path, root_ca: root_ca)
-    end
+          install_path = make_install_path("add-root-ca")
+          Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
+          configure_transporter_lane(install_path: install_path, root_ca: root_ca)
+        end
 
-    it 'returns early if ca certificate already exists in keystore' do
-      expect(FastlaneCore::UI).to receive(:success)
-      expect(FastlaneCore::UI).to receive(:success).with(/Added root CA certificate to keystore/)
-      expect(FastlaneCore::UI).to receive(:success)
-      expect(FastlaneCore::UI).to receive(:message).with(/Transporter is already configured for this root CA/)
+        it 'returns early if ca certificate already exists in keystore' do
+          expect(FastlaneCore::UI).to receive(:success)
+          expect(FastlaneCore::UI).to receive(:success).with(/Added root CA certificate to keystore/)
+          expect(FastlaneCore::UI).to receive(:success)
+          expect(FastlaneCore::UI).to receive(:message).with(/Transporter is already configured for this root CA/)
 
-      install_path = make_install_path("add-same-root-ca")
-      Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
-      configure_transporter_lane(install_path: install_path, root_ca: root_ca)
-      configure_transporter_lane(install_path: install_path, root_ca: root_ca)
+          install_path = make_install_path("add-same-root-ca")
+          Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
+          configure_transporter_lane(install_path: install_path, root_ca: root_ca)
+          configure_transporter_lane(install_path: install_path, root_ca: root_ca)
+        end
+      else
+        # Not supported yet, only Mac OS X installation works at the moment.
+      end
     end
 
     it 'enables basic authentication' do
@@ -42,12 +48,27 @@ describe Fastlane::Actions::ConfigureTransporterAction do
     end
 
     if FastlaneCore::Helper.mac?
+      it 'raises error when fails to find certificate by name' do
+        install_path = make_install_path("add-root-ca-by-name-fail")
+        Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
+        expect do
+          configure_transporter_lane(install_path: install_path, root_ca: "NoSuchName")
+        end.to raise_error(/Could not find certificate:/)
+      end
+
       it 'adds root ca certificate to keystore by name' do
-        # TODO:
+        setup_test_keychain
+        install_path = make_install_path("add-root-ca-by-name")
+        Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
+        configure_transporter_lane(install_path: install_path, root_ca: "Apple iPhone Certification Authority")
       end
     else
       it 'fails when trying to find certificate by name on non Mac platform' do
-        # TODO:
+        install_path = make_install_path("root-ca-by-name-non-os-x")
+        Fastlane::Transporter.install(source: unpacked_transporter_path, install_path: install_path)
+        expect do
+          configure_transporter_lane(install_path: install_path, root_ca: "NoSuchName")
+        end.to raise_error(/Certificate lookup is not supported on OS other than Mac yet/)
       end
     end
   end

@@ -57,21 +57,21 @@ module Fastlane
       root_ca_file = Helper::TransporterHelper.find_root_ca(root_ca)
       cert_alias = File.basename(root_ca_file)
 
-      cmd = Shellwords.escape([
+      cmd = [
         "#{install_path}/java/bin/keytool",
         "-list",
         "-keystore #{install_path}/java/lib/security/cacerts",
         "-storepass changeit",
         "-alias #{cert_alias}"
-      ].join(" "))
-      cert_exists = system("bash -c #{cmd}")
+      ].join(" ")
+      cert_exists = system(cmd)
       if cert_exists
         FastlaneCore::UI.message("Transporter is already configured for this root CA.")
         return
       end
 
       # Patch the transporter with internal root CA.
-      cmd = Shellwords.escape([
+      cmd = [
         "#{install_path}/java/bin/keytool",
         "-import",
         "-trustcacerts",
@@ -81,8 +81,8 @@ module Fastlane
         "-storepass changeit",
         "-noprompt",
         "-v"
-      ].join(" "))
-      system("bash -c #{cmd}")
+      ].join(" ")
+      system(cmd)
 
       FastlaneCore::UI.success("Added root CA certificate to keystore")
     end

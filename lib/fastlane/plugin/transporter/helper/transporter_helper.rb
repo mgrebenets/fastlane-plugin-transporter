@@ -47,7 +47,8 @@ module Fastlane
 
         root_ca_file = Tempfile.new("root_ca.pem").path
         if FastlaneCore::Helper.is_mac?
-          Fastlane::Actions.sh("security find-certificate -c #{name} -p >#{root_ca_file}")
+          result = system("security find-certificate -c #{name.shellescape} -p >#{root_ca_file}")
+          FastlaneCore::UI.user_error!("Could not find certificate: #{name}") unless result
         else
           FastlaneCore::UI.user_error!("Certificate lookup is not supported on OS other than Mac yet")
         end

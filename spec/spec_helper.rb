@@ -95,3 +95,23 @@ def successful_install_test(name:, source:)
   install_transporter_lane(source: source, install_path: install_path)
   expect(File.exist?(install_path)).to be_truthy
 end
+
+def setup_test_keychain
+  name = "TransporterKeychain.keychain"
+  path = File.join(TRANSPORTER_TESTS_DIR, name)
+  password = "password"
+
+  Fastlane::Actions::CreateKeychainAction.run(
+    path: path,
+    password: password,
+    timeout: false,
+    unlock: true
+  )
+
+  Fastlane::Actions::ImportCertificateAction.run(
+    certificate_path: fixture_path("fixtures/root_ca.pem"),
+    certificate_password: "",
+    keychain_path: path,
+    keychain_password: password
+  )
+end
