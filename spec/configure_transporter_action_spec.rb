@@ -31,9 +31,8 @@ describe Fastlane::Actions::ConfigureTransporterAction do
           configure_transporter_lane(install_path: install_path, root_ca: root_ca)
           configure_transporter_lane(install_path: install_path, root_ca: root_ca)
         end
-      else
-        # Not supported yet, only Mac OS X installation works at the moment.
       end
+      # Only supported for Mac at the moment.
     end
 
     it 'enables basic authentication' do
