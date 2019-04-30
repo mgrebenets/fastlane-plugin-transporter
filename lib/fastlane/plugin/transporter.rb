@@ -40,7 +40,7 @@ module Fastlane
         FileUtils.cp_r(File.join(source, '.'), install_path)
       else
         tar_path = Helper::TransporterHelper.fetch_file(source)
-        result = system("tar -xzf #{tar_path} -C #{install_path.shellescape} --strip-components=1")
+        result = system("tar --warning=no-unknown-keyword -xzf #{tar_path} -C #{install_path.shellescape} --strip-components=1")
         FastlaneCore::UI.user_error!("Failed to unpack tarball") unless result
       end
     end
