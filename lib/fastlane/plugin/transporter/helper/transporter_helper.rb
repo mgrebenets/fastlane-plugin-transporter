@@ -1,7 +1,7 @@
 require 'fastlane_core/ui/ui'
 
 module Fastlane
-  UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
+  UI = UI unless Fastlane.const_defined?("UI")
 
   module Helper
     class TransporterHelper
@@ -35,7 +35,7 @@ module Fastlane
         target_path = Tempfile.new(File.basename(path)).path
         cmd = "curl --progress-bar -L #{path.shellescape} -o #{target_path.shellescape}"
         result = system(cmd) # Won't get progress showing if using Action.sh here.
-        FastlaneCore::UI.user_error!("Failed to fetch file: #{path}") unless result
+        UI.user_error!("Failed to fetch file: #{path}") unless result
 
         File.expand_path(target_path)
       end
@@ -48,9 +48,9 @@ module Fastlane
         root_ca_file = Tempfile.new("root_ca.pem").path
         if FastlaneCore::Helper.is_mac?
           result = system("security find-certificate -c #{name.shellescape} -p >#{root_ca_file}")
-          FastlaneCore::UI.user_error!("Could not find certificate: #{name}") unless result
+          UI.user_error!("Could not find certificate: #{name}") unless result
         else
-          FastlaneCore::UI.user_error!("Certificate lookup is not supported on OS other than Mac yet")
+          UI.user_error!("Certificate lookup is not supported on OS other than Mac yet")
         end
 
         root_ca_file
