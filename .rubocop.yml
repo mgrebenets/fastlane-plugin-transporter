@@ -9,10 +9,6 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 Style/SafeNavigation:
   Enabled: false
-Performance/RegexpMatch:
-  Enabled: false
-Performance/StringReplacement:
-  Enabled: false
 Style/NumericPredicate:
   Enabled: false
 Metrics/BlockLength:
@@ -38,7 +34,7 @@ Style/BracesAroundHashParameters:
 Lint/UselessAssignment:
   Exclude:
   - "**/spec/**/*"
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   Enabled: false
 Layout/AlignHash:
   Enabled: false

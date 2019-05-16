@@ -1,14 +1,17 @@
 # transporter plugin
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-transporter)
-[![version](https://badge.fury.io/gh/mgrebenets%2Ffastlane-plugin-transporter.svg)](https://badge.fury.io/gh/mgrebenets%2Ffastlane-plugin-transporter)
+[![version](https://img.shields.io/github/tag/mgrebenets/fastlane-plugin-transporter.svg?color=green&label=version)](https://github.com/mgrebenets/fastlane-plugin-transporter)
 [![CircleCI](https://circleci.com/gh/mgrebenets/fastlane-plugin-transporter.svg?style=svg)](https://circleci.com/gh/mgrebenets/fastlane-plugin-transporter)
+[![Travis CI](https://img.shields.io/travis/mgrebenets/fastlane-plugin-transporter.svg?label=%20&logo=travis)](https://travis-ci.org/mgrebenets/fastlane-plugin-transporter)
+[![Coverage Status](https://coveralls.io/repos/github/mgrebenets/fastlane-plugin-transporter/badge.svg)](https://coveralls.io/github/mgrebenets/fastlane-plugin-transporter)
+
 
 ## Getting Started
 
 This project is a [_fastlane_](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-transporter`, add it to your project by running:
 
-```bash
+```shell
 fastlane add_plugin transporter
 ```
 
@@ -49,12 +52,13 @@ The example lane installs Transporter to `~/itms`, then adds Apple iPhone Certif
 
 To run both the tests, and code style validation, run
 
-```
+```shell
 rake
 ```
 
 To automatically fix many of the styling issues, use
-```
+
+```shell
 rubocop -a
 ```
 
