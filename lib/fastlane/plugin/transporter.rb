@@ -1,6 +1,7 @@
 require 'fastlane/plugin/transporter/version'
 
 module Fastlane
+  # Helper module to manage iTMSTransporter.
   module Transporter
     # Return all .rb files inside the "actions" and "helper" directory
     def self.all_classes

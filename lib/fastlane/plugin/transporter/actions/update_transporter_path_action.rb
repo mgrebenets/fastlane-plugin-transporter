@@ -4,6 +4,7 @@ require_relative '../../transporter'
 
 module Fastlane
   module Actions
+    # Action to update iTMSTransporter path in environment variable.
     class UpdateTransporterPathAction < Action
       def self.run(params)
         Transporter.update_path(path: params[:path])
