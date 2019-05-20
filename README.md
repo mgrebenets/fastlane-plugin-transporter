@@ -6,6 +6,7 @@
 [![CircleCI](https://circleci.com/gh/mgrebenets/fastlane-plugin-transporter.svg?style=svg)](https://circleci.com/gh/mgrebenets/fastlane-plugin-transporter)
 [![Travis CI](https://img.shields.io/travis/mgrebenets/fastlane-plugin-transporter.svg?label=%20&logo=travis)](https://travis-ci.org/mgrebenets/fastlane-plugin-transporter)
 [![Coverage Status](https://coveralls.io/repos/github/mgrebenets/fastlane-plugin-transporter/badge.svg)](https://coveralls.io/github/mgrebenets/fastlane-plugin-transporter)
+[![Inline docs](http://inch-ci.org/github/mgrebenets/fastlane-plugin-transporter.svg)](http://inch-ci.org/github/mgrebenets/fastlane-plugin-transporter)
 
 
 ## Getting Started
