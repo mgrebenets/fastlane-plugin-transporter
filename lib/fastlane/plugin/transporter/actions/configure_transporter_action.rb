@@ -7,6 +7,7 @@ module Fastlane
     # Action class to configure iTMSTransporter installation.
     class ConfigureTransporterAction < Action
       # Run action.
+      # @param [Hash] params Action parameters.
       def self.run(params)
         Transporter.add_root_ca(install_path: params[:install_path], root_ca: params[:root_ca]) if params[:root_ca]
         Transporter.enable_basic_auth(install_path: params[:install_path]) if params[:enable_basic_auth]

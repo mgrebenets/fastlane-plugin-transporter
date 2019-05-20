@@ -8,6 +8,7 @@ module Fastlane
     # Action class to install iTMSTransporter.
     class InstallTransporterAction < Action
       # Run action.
+      # @param [Hash] params Action parameters.
       def self.run(params)
         Transporter.install(
           source: params[:source],

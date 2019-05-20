@@ -7,6 +7,7 @@ module Fastlane
     # Action to update iTMSTransporter path in environment variable.
     class UpdateTransporterPathAction < Action
       # Run action.
+      # @param [Hash] params Action parameters.
       def self.run(params)
         Transporter.update_path(path: params[:path])
       end
