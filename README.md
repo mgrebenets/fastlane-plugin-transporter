@@ -8,7 +8,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/mgrebenets/fastlane-plugin-transporter/badge.svg)](https://coveralls.io/github/mgrebenets/fastlane-plugin-transporter)
 [![Inline docs](http://inch-ci.org/github/mgrebenets/fastlane-plugin-transporter.svg)](http://inch-ci.org/github/mgrebenets/fastlane-plugin-transporter)
 
-
 ## Getting Started
 
 This project is a [_fastlane_](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-transporter`, add it to your project by running:
