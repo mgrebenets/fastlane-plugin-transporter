@@ -1,9 +1,11 @@
 require 'fastlane_core/ui/ui'
 
+# Extend Fastlane module from Fastlane gem.
 module Fastlane
   # Alias for displaying UI messages.
   UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
 
+  # Extend Fastlane::Helper module from Fastlane gem.
   module Helper
     # Transporter helper class.
     class TransporterHelper
@@ -14,7 +16,7 @@ module Fastlane
       end
 
       # Check if shell command exists.
-      # @param [String] string Shell command.
+      # @param [String] cmd Shell command.
       # @return [Boolean] A Boolean indicating whether input is an existing shell command.
       def self.command_exist?(cmd)
         `which #{cmd} 2>/dev/null`.chomp != ""

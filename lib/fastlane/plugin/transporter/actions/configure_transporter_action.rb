@@ -4,24 +4,30 @@ require_relative '../../transporter'
 
 module Fastlane
   module Actions
+    # Action class to configure iTMSTransporter installation.
     class ConfigureTransporterAction < Action
+      # Run action.
       def self.run(params)
         Transporter.add_root_ca(install_path: params[:install_path], root_ca: params[:root_ca]) if params[:root_ca]
         Transporter.enable_basic_auth(install_path: params[:install_path]) if params[:enable_basic_auth]
       end
 
+      # Plugin action description.
       def self.description
         "Configure Apple iTMSTransporter installation"
       end
 
+      # List of plugin action authors.
       def self.authors
         ["Maksym Grebenets"]
       end
 
+      # Plugin action return value.
       def self.return_value
         # If your method provides a return value, you can describe here what it does
       end
 
+      # Plugin action details.
       def self.details
         [
           "- Add self-signed root Certificate Authority certificate to Transporter keystore",
@@ -29,6 +35,7 @@ module Fastlane
         ].join("\n")
       end
 
+      # Plugin action available options.
       def self.available_options
         [
           FastlaneCore::ConfigItem.new(key: :install_path,
@@ -50,6 +57,9 @@ module Fastlane
         ]
       end
 
+      # Check if action supports the platform.
+      # @param [Symbol] platform Platform to check.
+      # @return [Boolean] A Boolean indicating whether action supports the platform.
       def self.is_supported?(platform)
         [:ios, :mac].include?(platform)
       end

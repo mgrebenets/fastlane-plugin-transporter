@@ -3,8 +3,11 @@ require_relative '../helper/transporter_helper'
 require_relative '../../transporter'
 
 module Fastlane
+  # Add new actions by extending Fastlane::Actions module.
   module Actions
+    # Action class to install iTMSTransporter.
     class InstallTransporterAction < Action
+      # Run action.
       def self.run(params)
         Transporter.install(
           source: params[:source],
@@ -13,21 +16,26 @@ module Fastlane
         )
       end
 
+      # Plugin action description.
       def self.description
         "Install Apple iTMSTransporter"
       end
 
+      # List of plugin action authors.
       def self.authors
         ["Maksym Grebenets"]
       end
 
+      # Plugin action return value.
       def self.return_value
         # If your method provides a return value, you can describe here what it does
       end
 
+      # Plugin action details.
       def self.details
       end
 
+      # Plugin action available options.
       def self.available_options
         [
           FastlaneCore::ConfigItem.new(key: :source,
@@ -48,6 +56,9 @@ module Fastlane
         ]
       end
 
+      # Check if action supports the platform.
+      # @param [Symbol] platform Platform to check.
+      # @return [Boolean] A Boolean indicating whether action supports the platform.
       def self.is_supported?(platform)
         [:ios, :mac].include?(platform)
       end
