@@ -1,5 +1,6 @@
 # transporter plugin
 
+[![license](https://img.shields.io/github/license/mgrebenets/fastlane-plugin-transporter.svg)](https://github.com/mgrebenets/fastlane-plugin-transporter)
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-transporter)
 [![version](https://img.shields.io/github/tag/mgrebenets/fastlane-plugin-transporter.svg?color=green&label=version)](https://github.com/mgrebenets/fastlane-plugin-transporter)
 [![CircleCI](https://circleci.com/gh/mgrebenets/fastlane-plugin-transporter.svg?style=svg)](https://circleci.com/gh/mgrebenets/fastlane-plugin-transporter)
